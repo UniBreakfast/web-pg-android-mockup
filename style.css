@@ -1,0 +1,145 @@
+body {
+    display: flex;
+    height: 100vh;
+    margin: 0;
+    background: cornsilk;
+    font-family: Arial, Helvetica, sans-serif;
+}
+p {
+    margin: 0;
+}
+fieldset {
+    padding: 0;
+    margin: 0;
+    border: none;
+}
+
+.phone {
+    display: flex;
+    position: relative;
+    margin: auto;
+    width: 400px;
+    height: 760px;
+    border: 3px solid;
+    border-radius: 50px;
+    background: #80735f;
+}
+
+.display {
+    margin: auto;
+    width: 366px;
+    height: 600px;
+    border: 3px solid;
+    border-radius: 4px;
+    background: white;
+}
+
+#phoneBack {
+    position: absolute;
+    right: 82px;
+    bottom: 24px;
+    fill: white;
+}
+
+.system-drop-top {
+    padding: 0 3px;
+    display: flex;
+    justify-content: space-between;
+    height: 19px;
+    background: black;
+    color: white;
+}
+.system-drop-top>* {
+    display: flex;
+}
+.system-drop-top i {
+    font-size: 13px;
+    padding: 2px;
+}
+#sysClock {
+    margin-left: 5px;
+}
+
+.screen {
+    display: none;
+    padding: 5px;
+}
+.screen.active {
+    display: block;
+}
+
+[data-screen=outside] {
+    padding: 0;
+    background-image: url(wallpaper.png);
+}
+
+.icon-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    place-items: center center;
+    height: 500px;
+    padding: 10px;
+}
+.icon-grid>i {
+    font-size: 48px;
+}
+
+.system-quickbar {
+    display: flex;
+    border-top: 2px solid;
+    background: #6666;
+    height: 59px;
+    justify-content: space-around;
+    padding: 0 30px;
+    place-items: center center;
+}
+.system-quickbar>i {
+    font-size: 42px;
+}
+
+.fa-parking {
+    cursor: pointer;
+    color: coral;
+}
+
+.lobby-title {
+    margin: 45px 0 65px;
+}
+.big-title {
+    text-align: center;
+    font: italic bold 85px Trebuchet MS, Arial, Helvetica, sans-serif;
+    margin: 30px 0 -65px;
+}
+
+[data-screen=lobby] button {
+    border: solid 2px;
+    border-radius: 7px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.choice-btns {
+    display: flex;
+    margin: 120px 0 40px;
+    justify-content: center;
+}
+.choice-btns>button {
+    margin: 10px;
+    width: 150px;
+    height: 150px;
+}
+
+.find-out-more {
+    display: block;
+    margin: auto;
+    width: 240px;
+    height: 70px;
+}
+
+[data-screen=auth] input {
+    display: block;
+}
+
+#authChoice1>b {
+    display: none;
+}
