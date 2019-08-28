@@ -9,7 +9,8 @@
     .mode:not(.active) { display: none }
   </style>
   <script>
-    const app = { backSteps: [], back() {
+    const upd = {},
+          app = { backSteps: [], back() {
       if (app.backSteps.length) app.backSteps.pop()()
     }, properties: [{name: {first: 'John', last: 'Doe'}, age: 33, height: 178}, {name: {first: 'Jane', last: 'Day'}, age: 30, height: 170}, ] }
     // }, properties: {name: 'John', age: 33, height: 178} }
@@ -34,15 +35,15 @@
           area.dataset.active = mode
         })(area.dataset.active, 0)
       )
-
+      
       document.querySelectorAll('.renderable').forEach(area => {
         const template = area.innerHTML,
               source = app[area.dataset.src],
               placeholders = [...new Set(template.match(/\{.+?\}/g))]
                 .reduce((dic, holder) => ({...dic, [holder]: holder
-                  .split(/[.{}[\]]/g).filter(v=>v)}), {})
+                  .split(/[.{}[\]]/g).filter(v => v)}), {});
         
-        area.render = () => {
+        (area.render = () => {
           const src = Array.isArray(source)? source : 
                 Object.entries(source).map(([key, val], i) => ({key, val, i})),
                 placeValues = src.map(props => Object.entries(placeholders)
@@ -52,7 +53,11 @@
           area.innerHTML = placeValues.reduce((html, dic) => html + 
             Object.entries(dic).reduce((html, [holder, value]) => 
               html.split(holder).join(value), template), '')
-        }
+        })()
+        
+        var trottler = 0
+        Object.defineProperty(upd, area.dataset.src, { get: () => 
+          (clearTimeout(trottler), trottler = setTimeout(area.render, 0), source)})
       })
     } 
   </script>
