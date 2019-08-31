@@ -31,7 +31,7 @@ fieldset {
     height: 600px;
     border: 3px solid;
     border-radius: 4px;
-    background: white;
+    background: black;
 }
 
 #phoneBack {
@@ -60,15 +60,15 @@ fieldset {
     margin-left: 5px;
 }
 
-.screen {
-    display: none;
+[data-scr] {
+    height: 581px;
+    box-sizing: border-box;
+    background: #eee;
     padding: 5px;
-}
-.screen.active {
-    display: block;
+    text-align: center;
 }
 
-[data-screen=outside] {
+[data-scr=outside] {
     padding: 0;
     background-image: url(wallpaper.png);
 }
@@ -111,11 +111,12 @@ fieldset {
     margin: 30px 0 -65px;
 }
 
-[data-screen=lobby] button {
+button {
     border: solid 2px;
     border-radius: 7px;
     font-size: 20px;
     font-weight: bold;
+    padding: 6px 20px;
 }
 
 .choice-btns {
@@ -125,6 +126,7 @@ fieldset {
 }
 .choice-btns>button {
     margin: 10px;
+    padding: 6px;
     width: 150px;
     height: 150px;
 }
@@ -136,10 +138,48 @@ fieldset {
     height: 70px;
 }
 
-[data-screen=auth] input {
+.auth {
+    margin-top: 100px;
+}
+.auth i {
+    font-size: 36px;
+    margin: 20px 10px;
+}
+.auth input {
     display: block;
+    margin: 18px auto;
+    border: 2px solid;
+    font-size: 18px;
+    height: 23px;
+    width: 243px;
+    padding: 1px 5px;
+    text-align: center;
+}
+.auth input::placeholder {
+    font-style: italic;
+}
+.auth a {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 20px;
 }
 
-#authChoice1>b {
-    display: none;
+#main {
+    display: grid;
+    place-items: center center;
+    grid-template: "bars name conf notif" 3fr
+                   "time time time notif" 2fr
+                   "left left left notif" 2fr
+                   "btns btns btns notif" 3fr
+                   "rest rest rest rest " 24fr
+                   / 2fr  4fr  3fr  1fr
 }
+.fa-bars {
+    grid-area: bars;
+    justify-self: left;
+    align-self: start;
+    font-size: 26px;
+    margin: 2px 7px;
+}
+
+

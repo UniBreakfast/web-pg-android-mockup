@@ -8,6 +8,8 @@
   <title>PacerGame Android mockup</title>
 
   <link rel="stylesheet" href="style.css">
+  <script src="able.js"></script>
+  <script src="script.js"></script>
   <script src="clock.js"></script>
 
   <script src="https://kit.fontawesome.com/5233f159dd.js"></script>
@@ -30,44 +32,10 @@
         </span>
       </div>
 
-      <div id="app">
-        <script>
-          const onload = { prep: [], then: [], final: [] }
-          onload.prep.push( () => {
-            app.screens = [...app.querySelectorAll('.screen')]
-              .reduce((screens, screen) =>
-                ({ ...screens, [screen.dataset.screen]: screen }), {})
-            app.history = []
-          } )
-          window.onload = () => {
-            onload.prep.forEach(step => step())
-            onload.then.forEach(step => step())
-            onload.final.forEach(step => step())
-            goto('outside')
-            goto('auth')
-          }
+        <script>app.backStack[0]=()=>scr.switch('outside',0)/////</script>
+      <div class="switchable" id="scr" data-active="outside">
 
-          function goto(scrName, mode, skipHistory) {
-            let { active } = app.screens
-            if (active) {
-              if (!skipHistory) app.history.push(active)
-              active.classList.remove('active')
-            }
-            (active = app.screens.active = app.screens[scrName])
-              .classList.add('active')
-            if (active.render) active.render(mode)
-          }
-
-          function goback() {
-            if (app.history.length) {
-              app.screens.active.classList.remove('active');
-              (app.screens.active = app.history.pop())
-                .classList.add('active')
-            }
-          }
-        </script>
-
-        <div class="screen" data-screen="outside">
+        <div class="mode" data-scr="outside">
           <div class="icon-grid">
             <i class="fab fa-facebook-square"></i>
             <i class="fab fa-google"></i>
@@ -82,7 +50,8 @@
             <i class="far fa-paper-plane"></i>
             <i class="fab fa-twitch"></i>
             <i class="far fa-envelope"></i>
-            <i class="fas fa-parking" onclick="goto('lobby')"></i>
+            <i class="fas fa-parking"
+              onclick="scr.switch(app.user.length? 'main':'lobby')"></i>
 
             <i class="fab fa-whatsapp-square"></i>
             <i class="fab fa-dropbox"></i>
@@ -107,76 +76,91 @@
           </div>
         </div>
 
-        <div class="screen" data-screen="lobby">
+        <div class="mode" data-scr="lobby">
           <div class="lobby-title">
             <p class="big-title">Pacer</p>
             <p class="big-title">Game</p>
           </div>
 
           <div class="choice-btns">
-            <button onclick="goto('auth', 'register')">
+            <button onclick="scr.switch('auth'), auth.switch('reg',0)">
               Start as a new user
             </button>
-            <button onclick="goto('auth', 'login')">
+            <button onclick="scr.switch('auth'), auth.switch('login',0)">
               Sign in with an existing account
             </button>
           </div>
 
-          <button class="find-out-more" onclick="goto('more about app')">
+          <button class="find-out-more" onclick="scr.switch('moreon')">
             Find out more<br>about PacerGame
           </button>
         </div>
 
-        <div class="screen" data-screen="auth">
-          <script>
-            app.screens.auth.renderReg = () => {
-              authChoice1.querySelector('.active').classList.remove('active')
-              // authChoice---
-            }
-          </script>
-
+        <div class="mode switchable" id="auth" data-scr="auth"
+          data-active="login">
           <div class="lobby-title">
             <p class="big-title">Pacer</p>
             <p class="big-title">Game</p>
           </div>
 
-          <div id="authArea">
-            <p id="authChoice1">
-              <b class="reg">Sign up with one of your social accounts</b>
-              <b class="log">Sign in with one of your social accounts</b>
-            </p>
+          <div class="auth">
+            <b>Sign
+              <b class="mode" data-auth="reg">up</b>
+              <b class="mode" data-auth="login">in</b>
+            with one of your social accounts</b>
             <div id="authSocials">
               <i class="fab fa-google"></i>
               <i class="fab fa-facebook-square"></i>
-
+              <i class="fab fa-git"></i>
               <i class="fab fa-vk"></i>
-
+              <i class="fas fa-ellipsis-h"></i>
             </div>
-            <p id="authChoice2">or register with your login/password</p>
+            <b>or
+              <b class="mode" data-auth="reg">register</b>
+              <b class="mode" data-auth="login">enter</b>
+            with your login/password</b>
             <form id="authForm">
-              <input type="text" id="login">
-              <input type="password" id="pass1">
-              <fieldset id="authThirdLine">
-                <input type="password" id="pass2">
-                
-              </fieldset>
+              <input type="text" id="login" 
+                placeholder="login (username or email)">
+              <input type="password" id="pass" placeholder="password">
+              <input type="password" id="word" class="mode"
+                placeholder="repeat password" data-auth="reg">
+              <a href="#" class="mode" data-auth="login">
+                if you forgot your login/password...</a>
+              <button class="mode" data-auth="reg"
+                onclick="register()">Register</button>
+              <button class="mode" data-auth="login"
+                onclick="scr.switch('main')">Log in</button>
             </form>
+            <script>
+              function register() {
+                if (app.users.some(user => user.login == login.value))
+                  return console.log("login is occupied");
+                if (!login.value) return authTip.switch('require login', 4)
+                  
+              }
+            </script>
+          </div>
+
+          <div class="switchable" id="authTip">
+            <b class="mode" data-authTip="require login">
+              You need to choose a username for the login or, better yet, use
+              your email, so you could restore your password if you forget it
+            </b>
           </div>
         </div>
 
-        <div class="screen" data-screen="login">
-          Login process will be here
-          <button onclick="goto('lobby')">BACK</button>
+        <div class="mode" data-scr="moreon">
         </div>
 
-        <div class="screen" data-screen="more about app">
-          More information about app will be here
-          <button onclick="goto('lobby')">BACK</button>
+        <div class="mode" id="main" data-scr="main">
+          <i class="fas fa-bars"></i>
+          <div class="renderable" data-src="user">{name}</div>
         </div>
       </div>
     </div>
 
-    <svg id="phoneBack" onclick="goback()" height="42" viewBox="0 0 1024 1024">
+    <svg id="phoneBack" onclick="app.back()" height="42" viewBox="0 0 1024 1024">
       <path d="M691 315H243V172L64 351l179 179V386h448c108 0 197 89 197 198s-88
         197-197 197H404v71h287c147 0 269-120 269-268S838 315 691 315">
       </path>

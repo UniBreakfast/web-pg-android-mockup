@@ -13,7 +13,8 @@ addEventListener('load', () => {
         el.classList.add('active')
         if (el.render) el.render()
       })
-      if (backable) {
+      if (backable > 1) setTimeout(area.switch, backable*1000)
+      else if (backable) {
         const current = area.dataset.active
         app.backStack.push(()=> {
           area.switch(current, 0)
@@ -21,6 +22,7 @@ addEventListener('load', () => {
         })
       }
       area.dataset.active = mode
+      if (event) event.preventDefault()
     })(area.dataset.active, 0)
   )
   
@@ -43,13 +45,16 @@ addEventListener('load', () => {
           html.split(holder).join(value), template), '')
     })()
     
-    var trottler = 0
+    var previouslyPlanned = 0
     const otherAreaRender = upd[srcProp]? 
       Object.getOwnPropertyDescriptor(upd, srcProp).get : ()=>{}
 
     Object.defineProperty(upd, srcProp, { configurable: true, get: () => 
-      (clearTimeout(trottler), trottler = setTimeout(() => 
-        ( area.render(), otherAreaRender() ), 0), source) })
+      (clearTimeout(previouslyPlanned), previouslyPlanned = setTimeout( () => 
+        ( area.render(), otherAreaRender() ), 0 ), source) })
   })
 
 })
+
+document.head.appendChild(document.createElement('style'))
+  .innerText = '.mode:not(.active) { display: none !important }'
