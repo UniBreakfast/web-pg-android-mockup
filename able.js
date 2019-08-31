@@ -4,7 +4,8 @@ const app = { backStack: [],
 
 addEventListener('load', () => {
 
-  document.querySelectorAll('.switchable').forEach(area =>
+  document.querySelectorAll('.switchable').forEach(area => {
+    var prevInformer
     (area.switch = (mode, backable=1) => {
       area.querySelectorAll('.mode').forEach(el => {
         const id = area.id.toLowerCase()
@@ -13,7 +14,10 @@ addEventListener('load', () => {
         el.classList.add('active')
         if (el.render) el.render()
       })
-      if (backable > 1) setTimeout(area.switch, backable*1000)
+      if (backable > 1) {
+        clearTimeout(prevInformer)
+        prevInformer = setTimeout(()=>area.switch('', 0), backable*1000)
+      }
       else if (backable) {
         const current = area.dataset.active
         app.backStack.push(()=> {
@@ -24,17 +28,17 @@ addEventListener('load', () => {
       area.dataset.active = mode
       if (event) event.preventDefault()
     })(area.dataset.active, 0)
-  )
+  })
   
   document.querySelectorAll('.renderable').forEach(area => {
     const template = area.innerHTML, srcProp = area.dataset.src,
-          source = app[srcProp],
+          source = app[srcProp] || (app[srcProp] = []),
           placeholders = [...new Set(template.match(/\{.+?\}/g))]
             .reduce((dic, holder) => ({...dic, [holder]: holder
               .split(/[.{}[\]]/g).filter(v => v)}), {});
     
     (area.render = () => {
-      const src = Array.isArray(source)? source : 
+      const src = Array.isArray(source)? source.map((obj, i) => ({...obj, i})) : 
             Object.entries(source).map(([key, val], i) => ({key, val, i: i+1})),
             placeValues = src.map(props => Object.entries(placeholders)
               .reduce((dic, [holder, path]) => ({...dic, [holder]: path

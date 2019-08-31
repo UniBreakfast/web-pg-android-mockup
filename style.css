@@ -60,9 +60,12 @@ fieldset {
     margin-left: 5px;
 }
 
-[data-scr] {
+#scr, #scr>.mode, #nav nav {
     height: 581px;
     box-sizing: border-box;
+}
+
+[data-scr] {
     background: #eee;
     padding: 5px;
     text-align: center;
@@ -117,6 +120,7 @@ button {
     font-size: 20px;
     font-weight: bold;
     padding: 6px 20px;
+    background: #ccc;
 }
 
 .choice-btns {
@@ -164,6 +168,20 @@ button {
     margin-bottom: 20px;
 }
 
+.tips .mode {
+    display: block;
+    padding: 20px 10px;
+    background: #ddd;
+    border-radius: 15px;
+    border: 2px solid;
+}
+#regTip .mode {
+    transform: translateY(-426px);
+}
+#loginTip .mode {
+    transform: translateY(-417px);
+}
+
 #main {
     display: grid;
     place-items: center center;
@@ -182,4 +200,29 @@ button {
     margin: 2px 7px;
 }
 
+#nav {
+    transform: translateY(-100%);
+    background: #0006;
+    /* overflow: hidden; */
+}
+#nav nav {
+    display: inline-flex;
+    flex-direction: column;
+    border: 2px solid;
+    background: #ddd;
+    /* transition: all .3s; */
+}
+/* #nav nav:not(.active) {
+    transform:translateX(-100%);
+} */
+#nav a {
+    background: #ddd;
+    padding: 10px;
+    border-bottom: 2px solid;
+    font-size: 20px;
+}
+
+#main [data-src=user] {
+    font-size: 22px;
+}
 

@@ -5,3 +5,7 @@
 
 Object.entries(localStorage).forEach(([key, value]) => 
   app[key] = JSON.parse(value))
+
+function lStore(...props) {
+  props.forEach(prop => localStorage[prop] = JSON.stringify(app[prop]))
+}

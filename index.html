@@ -32,8 +32,8 @@
         </span>
       </div>
 
-        <script>app.backStack[0]=()=>scr.switch('outside',0)/////</script>
-      <div class="switchable" id="scr" data-active="outside">
+      <script>app.backStack[0]=()=>scr.switch('outside',0)//////////////</script>
+      <div class="switchable" id="scr" data-active="main">
 
         <div class="mode" data-scr="outside">
           <div class="icon-grid">
@@ -51,7 +51,7 @@
             <i class="fab fa-twitch"></i>
             <i class="far fa-envelope"></i>
             <i class="fas fa-parking"
-              onclick="scr.switch(app.user.length? 'main':'lobby')"></i>
+              onclick="scr.switch(app.user[0]? 'main':'lobby')"></i>
 
             <i class="fab fa-whatsapp-square"></i>
             <i class="fab fa-dropbox"></i>
@@ -130,32 +130,90 @@
               <button class="mode" data-auth="reg"
                 onclick="register()">Register</button>
               <button class="mode" data-auth="login"
-                onclick="scr.switch('main')">Log in</button>
+                onclick="doLogin()">Log in</button>
             </form>
             <script>
               function register() {
+                if (!login.value) return regTip.switch('require login', 9)
                 if (app.users.some(user => user.login == login.value))
-                  return console.log("login is occupied");
-                if (!login.value) return authTip.switch('require login', 4)
-                  
+                  return regTip.switch('login occupied', 8)
+                if (!pass.value || !word.value) 
+                  return regTip.switch('require pass', 8)
+                if (pass.value != word.value)
+                  return regTip.switch('pass mismatch', 8)
+                app.users.push(upd.user[0] = 
+                  {login: login.value, pass: pass.value,
+                    name: login.value.replace(/@.*$/, '')})
+                lStore('user','users')
+                app.backStack.splice(1)
+                scr.switch('main', 0)
+              }
+              function doLogin() {
+                if (!login.value) return loginTip.switch('enter your login', 7)
+                if (!pass.value) return loginTip.switch('and your pass', 6)
+                let user = app.users.find(user => user.login == login.value)
+                if (!user) return loginTip.switch('user not found', 7)
+                if (user.pass != pass.value) 
+                  return loginTip.switch('incorrect pass', 7)
+                upd.user[0] = user
+                lStore('user')
+                app.backStack.splice(1)
+                scr.switch('main', 0)
               }
             </script>
           </div>
 
-          <div class="switchable" id="authTip">
-            <b class="mode" data-authTip="require login">
+          <div class="mode switchable tips" id="regTip" data-auth="reg">
+            <b class="mode" data-regTip="require login">
               You need to choose a username for the login or, better yet, use
-              your email, so you could restore your password if you forget it
-            </b>
+              your email, so you could restore your password if you forget it</b>
+            <b class="mode" data-regTip="require pass">
+              Choose a password to use with your account and enter it. Twice</b>
+            <b class="mode" data-regTip="pass mismatch">
+              You entered different passwords. Try again</b>
+            <b class="mode" data-regTip="login occupied">
+              The login you entered is already occupied. Try another one</b>
           </div>
+          <div class="mode switchable tips" id="loginTip" data-auth="login">
+            <b class="mode" data-loginTip="enter your login">Please
+              enter your login (it should've been your nickname or email)</b>
+            <b class="mode" data-loginTip="and your pass">
+              And what was your password?</b>
+            <b class="mode" data-loginTip="user not found">
+              No registered user found with this login</b>
+            <b class="mode" data-loginTip="incorrect pass">
+              It's not the correct password for this login</b>
+          </div>
+
         </div>
 
         <div class="mode" data-scr="moreon">
         </div>
 
         <div class="mode" id="main" data-scr="main">
-          <i class="fas fa-bars"></i>
+          <i class="fas fa-bars" onclick="nav.switch('open')"></i>
           <div class="renderable" data-src="user">{name}</div>
+        </div>
+
+        <div class="mode" id="users" data-scr="users">
+          <div class="renderable" data-src="users">
+            <b>{i}.</b> <h3>{name}</h3>
+          </div>
+        </div>
+
+        <div class="switchable" id="nav" onclick="app.back()">
+          <nav class="mode" data-nav="open">
+            <a onclick="app.back(), scr.switch('users')//////////">Users</a>
+            <a onclick="exit()">Exit</a>
+            <a onclick="exit(true)">Log out</a>
+            <script>
+              function exit(logout) {
+                if (logout) app.user[0] = lStore('user')
+                nav.switch(), scr.switch('outside')
+                app.backStack.splice(0)
+              }
+            </script>
+          </nav>
         </div>
       </div>
     </div>
