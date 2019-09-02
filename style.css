@@ -121,6 +121,7 @@ button {
     font-weight: bold;
     padding: 6px 20px;
     background: #ccc;
+    cursor: pointer;
 }
 
 .choice-btns {
@@ -198,6 +199,7 @@ button {
     align-self: start;
     font-size: 26px;
     margin: 2px 7px;
+    cursor: pointer;
 }
 
 #nav {
@@ -220,6 +222,7 @@ button {
     padding: 10px;
     border-bottom: 2px solid;
     font-size: 20px;
+    cursor: pointer;
 }
 
 #main [data-src=user] {
@@ -240,6 +243,7 @@ button {
 
 #ends {
     display: grid;
+    position: relative;
     place-items: start;
     grid-template: "bars user" 40px
                    "ends ends" auto
@@ -251,6 +255,9 @@ button {
 }
 
 .add {
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
     border-radius: 50%;
     padding: 0;
     width: 39px;
