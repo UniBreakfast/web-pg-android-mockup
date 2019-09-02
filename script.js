@@ -1,5 +1,5 @@
-['user','users'].forEach(prop => app[prop] = [])
-
+['user','users','endeavors'].forEach(prop => app[prop] = [])
+app.id = 1
 // app.user = [{name: "clever_username"}]
 // localStorage.user = JSON.stringify(app.user)
 

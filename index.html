@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="style.css">
   <script src="able.js"></script>
   <script src="script.js"></script>
-  <script src="clock.js"></script>
+  <!-- <script src="clock.js"></script> -->
 
   <script src="https://kit.fontawesome.com/5233f159dd.js"></script>
 </head>
@@ -27,13 +27,13 @@
           <i class="fas fa-signal"></i>
           <i class="fas fa-battery-three-quarters"></i>
           <span id="sysClock">
-            <script>tickTime()</script>
+            <script>try{ tickTime() }catch{}</script>
           </span>
         </span>
       </div>
 
       <script>app.backStack[0]=()=>scr.switch('outside',0)//////////////</script>
-      <div class="switchable" id="scr" data-active="main">
+      <div class="switchable" id="scr" data-active="endeavors">
 
         <div class="mode" data-scr="outside">
           <div class="icon-grid">
@@ -141,10 +141,10 @@
                   return regTip.switch('require pass', 8)
                 if (pass.value != word.value)
                   return regTip.switch('pass mismatch', 8)
-                app.users.push(upd.user[0] = 
-                  {login: login.value, pass: pass.value,
+                upd.users.push(upd.user[0] = 
+                  {id: app.id++, login: login.value, pass: pass.value,
                     name: login.value.replace(/@.*$/, '')})
-                lStore('user','users')
+                lStore('id', 'user', 'users')
                 app.backStack.splice(1)
                 scr.switch('main', 0)
               }
@@ -195,20 +195,37 @@
           <div class="renderable" data-src="user">{name}</div>
         </div>
 
+        <div class="mode" id="ends" data-scr="endeavors">
+          <i class="fas fa-bars" onclick="nav.switch('open')"></i>
+          <table id="endList">
+            <thead>
+              <tr><th></th><th>endeavor</th><th>id</th></tr>
+            </thead>
+            <tbody class="renderable" data-src="endeavors">
+              <tr><td>{i}</td><td>{name}</td><td>{id}</td></tr>
+            </tbody>
+          </table>
+          <button class="add"><i class="fas fa-plus"></i></button>
+        </div>
+
         <div class="mode" id="users" data-scr="users">
-          <div class="renderable" data-src="users">
-            <b>{i}.</b> <h3>{name}</h3>
+          <i class="fas fa-bars" onclick="nav.switch('open')"></i>
+          <div class="renderable" data-src="users" id="userList">
+            <div> <b>{i}. {name} (id: {id})</b> </div>
           </div>
         </div>
 
-        <div class="switchable" id="nav" onclick="app.back()">
+        <div class="switchable" id="nav"
+          onclick="if (event.target == nav) app.back()">
           <nav class="mode" data-nav="open">
-            <a onclick="app.back(), scr.switch('users')//////////">Users</a>
+            <a onclick="app.back(), scr.switch('main')">Main</a>
+            <a onclick="app.back(), scr.switch('endeavors')">Endeavors</a>
+            <a onclick="app.back(), scr.switch('users')">Users</a>
             <a onclick="exit()">Exit</a>
             <a onclick="exit(true)">Log out</a>
             <script>
               function exit(logout) {
-                if (logout) app.user[0] = lStore('user')
+                if (logout) app.user.pop(), lStore('user')
                 nav.switch(), scr.switch('outside')
                 app.backStack.splice(0)
               }

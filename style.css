@@ -226,3 +226,36 @@ button {
     font-size: 22px;
 }
 
+#users {
+    display: grid;
+    place-items: start;
+    grid-template: "bars   user" 40px
+                   "users users" auto
+                   / 40px  auto  
+}
+
+#userList {
+    grid-area: users;
+}
+
+#ends {
+    display: grid;
+    place-items: start;
+    grid-template: "bars user" 40px
+                   "ends ends" auto
+                  / 40px auto  
+}
+
+#endList {
+    grid-area: ends;
+}
+
+.add {
+    border-radius: 50%;
+    padding: 0;
+    width: 39px;
+    height: 39px;
+    text-align: center;
+    line-height: 37px;
+    outline: none;
+}
