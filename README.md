@@ -1,6 +1,6 @@
 # web-pg-android-mockup
 
-## Android app imitation in a browser page
+## Pacer Game Android app imitation in a browser page
 
 ### with own improvised framework able.js
 
