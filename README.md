@@ -1,4 +1,4 @@
-# web-pg-android-mockup
+# [web-pg-android-mockup](https://github.com/UniBreakfast/web-pg-android-mockup)
 
 ## Pacer Game Android app imitation in a browser page
 
